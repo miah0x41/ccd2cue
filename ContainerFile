@@ -1,0 +1,32 @@
+FROM ubuntu:20.04
+
+LABEL "org.opencontainers.image.authors"="miah0x41"
+
+# Install dependencies
+RUN apt update && apt install -y \
+      build-essential \
+      gcc \
+      wget \
+      && rm -rf /var/lib/apt/lists/*
+
+# Create folder
+RUN mkdir -p /source/ccd2cue
+
+# Change working directory
+WORKDIR /source/ccd2cue
+
+# Download source code
+RUN wget https://ftp.gnu.org/gnu/ccd2cue/ccd2cue-0.5.tar.gz \
+  && tar xvzf ccd2cue-0.5.tar.gz \
+  && rm ccd2cue-0.5.tar.gz
+
+# Change into source directory
+WORKDIR /source/ccd2cue/ccd2cue-0.5
+
+# Configure, make and install
+RUN ./configure \
+  && make \
+  && make install
+
+# Set default command
+ENTRYPOINT ["/usr/local/bin/ccd2cue"]
