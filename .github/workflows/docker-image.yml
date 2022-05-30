@@ -48,4 +48,4 @@ jobs:
         context: .
         file: ContainerFile
         push: true
-        tags: ${{ env.TAG }}
+        tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}
